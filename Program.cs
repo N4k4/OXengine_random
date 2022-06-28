@@ -13,6 +13,8 @@ namespace Programs
             setup();
 
             Console.WriteLine("Hello World!");
+            string message = Console.ReadLine();
+            Console.Write("Leceived[{0}]",message);
         }
 
         
