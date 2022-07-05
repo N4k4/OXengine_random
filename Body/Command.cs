@@ -16,7 +16,7 @@ namespace OXengine_random.Body
 
         //コマンドを空白で区切った後の文字列。送られてきた元のコマンドになる。
 
-        protected string[] args=new string[0];
+        protected string[] args = new string[0];
 
         public static StECommand? generateCommand(string commandString)
         {
@@ -46,8 +46,52 @@ namespace OXengine_random.Body
 
 
     //エンジンからサーバーに送られるコマンド
-    public class EtSCommand : Command
+    public abstract class EtSCommand : Command
     {
+        //それぞれのコマンドについて、標準出力に流すテキスト形式に変換する関数
+        public abstract string genCommandString();
+    }
 
+    public enum idType
+    {
+        name, author
+    }
+
+    //idコマンド
+    public class id : EtSCommand
+    {
+        idType idType;
+        public id(idType idT)
+        {
+            this.idType = idT;
+        }
+
+        public override string genCommandString()
+        {
+            if (idType == idType.name)
+            {
+                return "id name " + Programs.Program.NAME;
+            }
+            else if (idType == idType.author)
+            {
+                return "id author " + Programs.Program.AUTHOR;
+            }
+            else
+            {
+                return "";
+            }
+        }
+    }
+
+    //oxokコマンド
+    public class oxok : EtSCommand{
+        public oxok(){
+
+        }
+
+        public override string genCommandString()
+        {
+            return "oxok";
+        }
     }
 }

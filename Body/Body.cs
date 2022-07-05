@@ -29,7 +29,7 @@ namespace OXengine_random.Body
             listenCommandHandler += AcceptCommand;
             //ループ処理の開始
             //StEコマンド処理ループ
-            Task.Run(()=>processStECommandQueue());
+            Task.Run(() => processStECommandQueue());
             //コマンドの受付ループ
             Task.Run(() => EventHandler.ListenCommand.Listen(listenCommandHandler));
         }
@@ -39,7 +39,7 @@ namespace OXengine_random.Body
         {
             //TODO:機能の実装
 
-            Console.WriteLine(commandString);
+            // Console.WriteLine(commandString);
 
             //送信されたコマンドをコマンドオブジェクト化
             StECommand? StEC = StECommand.generateCommand(commandString);
@@ -73,10 +73,32 @@ namespace OXengine_random.Body
                     StECommand StEC = StECommandQueue.Dequeue();
 
                     //入れられたコマンドを実行
-                    Console.WriteLine("コマンド実行:{0}",StEC.GetType());
+                    // Console.WriteLine("コマンド実行:{0}",StEC.GetType());
+                    //非同期でコマンドを処理する
+                    Task.Run(() => processStECommand(StEC));
                 }
             }
         }
 
+        //StEコマンドを処理する関数
+        void processStECommand(StECommand StEC)
+        {
+
+            //コマンドで場合分け
+            //TODO:ほかのコマンドの場合分けの実装
+            if (typeof(ox) == StEC.GetType())
+            {
+                //TODO:oxコマンドの処理の実装
+                Console.WriteLine("oxコマンドの受信");
+            }
+        }
+
+        //EtSコマンドを送信する関数
+        void sendEtSCommand(EtSCommand EtSC){
+            //コマンドをテキスト形式に変換して標準出力に流すだけ
+            Console.WriteLine(EtSC.genCommandString());
+        }
     }
+
 }
+

@@ -7,22 +7,22 @@ namespace Programs
 
     class Program
     {
-
-        
-        const string version = "0.0.0";
+        public const string NAME = "OXengine_random";
+        public const string AUTHOR = "Naka";
+        public const string version = "0.0.0";
         static int Main(string[] args)
         {
 
-           OXengine_random.Body.Body body = new Body();
+            OXengine_random.Body.Body body = new Body();
 
             setup();
             while (true)
             {
-                
+
                 // Console.WriteLine("send message. if you send 'quit' then this program end.");
                 // while(true){
 
-                
+
                 // string message = Console.ReadLine();
                 // if (message == "quit") { Console.WriteLine("bye");return 0; }
                 // if(!(message == null | message == ""))Console.Write("Leceived[{0}]\n", message);
