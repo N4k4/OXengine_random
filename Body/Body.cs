@@ -9,20 +9,29 @@ namespace OXengine_random.Body
     public class Body
     {
         //サーバーから送られてきたコマンドのQueue
-        Queue<Command> commandQueue;
+        Queue<StECommand> StECommandQueue;
+
+        //サーバーへ送るコマンドのQueue;
+        Queue<EtSCommand> EtSCommandQueue;
         //イベント
         public event EventHandler.ListenCommandHandler listenCommandHandler;
         public Body()
         {
             //初期化
 
-            commandQueue = new Queue<Command>();
+            StECommandQueue = new Queue<StECommand>();
+
+            EtSCommandQueue = new Queue<EtSCommand>();
+
 
 
             //イベントの登録
             listenCommandHandler += AcceptCommand;
-            //コマンドの受付の開始
-            Task.Run(()=>EventHandler.ListenCommand.Listen(listenCommandHandler));
+            //ループ処理の開始
+            //StEコマンド処理ループ
+            Task.Run(()=>processStECommandQueue());
+            //コマンドの受付ループ
+            Task.Run(() => EventHandler.ListenCommand.Listen(listenCommandHandler));
         }
 
         //コマンドテキストを受け付ける関数
@@ -31,11 +40,42 @@ namespace OXengine_random.Body
             //TODO:機能の実装
 
             Console.WriteLine(commandString);
+
+            //送信されたコマンドをコマンドオブジェクト化
+            StECommand? StEC = StECommand.generateCommand(commandString);
+
+            //TODO:未登録コマンドの処理
+            if (StEC == null)
+            {
+                Console.Error.WriteLine("AcceptCommand:登録されていないStECommandを検出しました。[{0}]", commandString);
+            }
+            else
+            {
+                //送付されたコマンドをキューに追加
+                StECommandQueue.Enqueue(StEC);
+            }
+
         }
 
-        //コマンドを処理する関数
-        void proceccCommand(){
+        //StEコマンドキューを処理する関数
+        void processStECommandQueue()
+        {
 
+            //キューにたまっているコマンドを取り出し
+            //TODO:ループの終了処理
+
+            while (true)
+            {
+                if (StECommandQueue.Count != 0)//キューがたまっているとき
+                {
+                    //?取り出しからコマンド実行までの一連の流れを非同期化したい
+                    //最初に入れられたコマンドを取り出す
+                    StECommand StEC = StECommandQueue.Dequeue();
+
+                    //入れられたコマンドを実行
+                    Console.WriteLine("コマンド実行:{0}",StEC.GetType());
+                }
+            }
         }
 
     }
