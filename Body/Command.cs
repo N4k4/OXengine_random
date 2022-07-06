@@ -84,9 +84,17 @@ namespace OXengine_random.Body
     public class position : StECommand
     {
         //TODO:動きの記録方法の追加
+        public string[]? move{get;}
         public position(string[] args) : base(args)
         {
             //TODO:moveオプションからログを取得
+
+            if(args.Length==2)//position bestmoveの時
+            {
+                move=null;
+            }else{
+                move = args[2..args.Length];
+            }
         }
     }
 
