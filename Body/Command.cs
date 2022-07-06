@@ -35,6 +35,18 @@ namespace OXengine_random.Body
                     return new ox(Args);
                 case "isready":
                     return new isready(Args);
+                case "oxnewgame":
+                    return new oxnewgame(Args);
+                case "position":
+                    return new position(Args);
+                case "go":
+                    return new go(Args);
+                case "stop":
+                    return new stop(Args);
+                case "quit":
+                    return new quit(Args);
+                case "gameover":
+                    return new gameover(Args);
                 default:
                     return null;//TODO:未登録コマンドが送信されたときの処理
             }
@@ -214,15 +226,18 @@ namespace OXengine_random.Body
 
     //bestmove
     //!未実装
-    public class bestmove : EtSCommand{
-        
+    public class bestmove : EtSCommand
+    {
+
         //TODO:動きを受け付ける
         //TODO:降参を適切に受け付ける
-        public bestmove(){
+        public bestmove()
+        {
 
         }
 
-        public bestmove(int a){
+        public bestmove(int a)
+        {
 
         }
 

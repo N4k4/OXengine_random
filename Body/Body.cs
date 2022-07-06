@@ -92,6 +92,21 @@ namespace OXengine_random.Body
                 // Console.WriteLine("oxコマンドの受信");
                 processOx((ox)StEC);
             }
+            else if(typeof(isready) == StEC.GetType()){
+
+            }else if(typeof(oxnewgame) == StEC.GetType()){
+
+            }else if(typeof(position) == StEC.GetType()){
+
+            }else if(typeof(go) == StEC.GetType()){
+
+            }else if(typeof(stop) == StEC.GetType()){
+
+            }else if(typeof(quit) == StEC.GetType()){
+
+            }else if(typeof(gameover) == StEC.GetType()){
+                
+            }
         }
 
         //oxコマンドの処理
