@@ -5,7 +5,7 @@ namespace OXengine_random.Body
     //コマンドを一元管理する抽象クラス
     public abstract class Command
     {
-
+        //!コマンドの発行時刻を記録してもいいかもしれない
     }
 
 
@@ -18,6 +18,11 @@ namespace OXengine_random.Body
 
         protected string[] args = new string[0];
 
+        public StECommand(string[] args)
+        {
+            this.args = args;
+        }
+
         public static StECommand? generateCommand(string commandString)
         {
             string[] Args = commandString.Split(' ');
@@ -28,6 +33,8 @@ namespace OXengine_random.Body
             {
                 case "ox":
                     return new ox(Args);
+                case "isready":
+                    return new isready(Args);
                 default:
                     return null;//TODO:未登録コマンドが送信されたときの処理
             }
@@ -37,11 +44,105 @@ namespace OXengine_random.Body
     //ox
     public class ox : StECommand
     {
-        internal ox(string[] args)
+        public ox(string[] args) : base(args)
         {
-            this.args = args;
+            // this.args = args;
         }
     }
+
+    //isready
+    public class isready : StECommand
+    {
+        public isready(string[] args) : base(args)
+        {
+            // this.args = args;
+        }
+    }
+
+    //oxnewgame
+    public class oxnewgame : StECommand
+    {
+        public oxnewgame(string[] args) : base(args)
+        {
+            // this.args = args;
+        }
+    }
+
+    //position
+    public class position : StECommand
+    {
+        //TODO:動きの記録方法の追加
+        public position(string[] args) : base(args)
+        {
+            //TODO:moveオプションからログを取得
+        }
+    }
+
+    //go
+    public class go : StECommand
+    {
+        int byouyomi;
+        public go(string[] args) : base(args)
+        {
+            //TODO:ほかのオプションが追加されたときのために、コマンドの構文解釈をするように変更したい
+
+            //!Parseに失敗したときの処理の追加
+            byouyomi = int.Parse(args[2]);
+        }
+    }
+
+    //stop
+    public class stop : StECommand
+    {
+        public stop(string[] args) : base(args)
+        {
+
+        }
+    }
+
+    //quit
+    public class quit : StECommand
+    {
+        public quit(string[] args) : base(args)
+        {
+
+        }
+    }
+
+    //gameover
+    //ゲームオーバーの結果
+    public enum gameoverType
+    {
+        win, lose, draw,
+        unknown
+    }
+    public class gameover : StECommand
+    {
+        public gameoverType result { get; }
+        public gameover(string[] args) : base(args)
+        {
+            //結果を取得
+            switch (args[1])
+            {
+                case "win":
+                    result = gameoverType.win;
+                    break;
+                case "lose":
+                    result = gameoverType.lose;
+                    break;
+                case "draw":
+                    result = gameoverType.draw;
+                    break;
+                case "unknown":
+                    result = gameoverType.unknown;
+                    break;
+                default:
+                    result = gameoverType.unknown;
+                    break;
+            }
+        }
+    }
+
 
 
 
@@ -84,8 +185,10 @@ namespace OXengine_random.Body
     }
 
     //oxokコマンド
-    public class oxok : EtSCommand{
-        public oxok(){
+    public class oxok : EtSCommand
+    {
+        public oxok()
+        {
 
         }
 
@@ -94,4 +197,40 @@ namespace OXengine_random.Body
             return "oxok";
         }
     }
+
+    //readyok
+    public class readyok : EtSCommand
+    {
+        public readyok()
+        {
+
+        }
+
+        public override string genCommandString()
+        {
+            return "readyok";
+        }
+    }
+
+    //bestmove
+    //!未実装
+    public class bestmove : EtSCommand{
+        
+        //TODO:動きを受け付ける
+        //TODO:降参を適切に受け付ける
+        public bestmove(){
+
+        }
+
+        public bestmove(int a){
+
+        }
+
+        public override string genCommandString()
+        {
+            return "bestmove ";
+        }
+
+    }
+
 }
