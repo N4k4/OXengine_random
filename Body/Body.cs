@@ -89,8 +89,19 @@ namespace OXengine_random.Body
             if (typeof(ox) == StEC.GetType())
             {
                 //TODO:oxコマンドの処理の実装
-                Console.WriteLine("oxコマンドの受信");
+                // Console.WriteLine("oxコマンドの受信");
+                processOx((ox)StEC);
             }
+        }
+
+        //oxコマンドの処理
+        void processOx(ox command){
+            //idコマンドの送信
+            sendEtSCommand(new id(idType.name));
+            sendEtSCommand(new id(idType.author));
+            //!前処理が必要ならここでやっておくといいかも
+            //oxokコマンドの送信
+            sendEtSCommand(new oxok());
         }
 
         //EtSコマンドを送信する関数
