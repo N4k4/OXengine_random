@@ -8,6 +8,10 @@ namespace OXengine_random.Body
     //基本的な動作を管理するクラス
     public class Body
     {
+        //盤面の保存
+        Game.Board board = new Game.Board();
+
+
         //サーバーから送られてきたコマンドのQueue
         Queue<StECommand> StECommandQueue;
 
@@ -161,7 +165,8 @@ namespace OXengine_random.Body
 
         void processPosition(position command)
         {
-
+            //処理
+            board.setBoard(command);
         }
 
         void processGo(go command)

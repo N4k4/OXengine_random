@@ -94,7 +94,7 @@ namespace OXengine_random.Body
                 move=null;
             }else{
                 
-                move = args[2..args.Length];
+                move = args[3..args.Length];
             }
         }
     }
