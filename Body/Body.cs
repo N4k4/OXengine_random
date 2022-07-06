@@ -12,7 +12,8 @@ namespace OXengine_random.Body
         Queue<StECommand> StECommandQueue;
 
         //サーバーへ送るコマンドのQueue;
-        Queue<EtSCommand> EtSCommandQueue;
+        //!使っていない
+        // Queue<EtSCommand> EtSCommandQueue;
         //イベント
         public event EventHandler.ListenCommandHandler listenCommandHandler;
         public Body()
@@ -21,7 +22,7 @@ namespace OXengine_random.Body
 
             StECommandQueue = new Queue<StECommand>();
 
-            EtSCommandQueue = new Queue<EtSCommand>();
+            // EtSCommandQueue = new Queue<EtSCommand>();
 
 
 
@@ -92,25 +93,53 @@ namespace OXengine_random.Body
                 // Console.WriteLine("oxコマンドの受信");
                 processOx((ox)StEC);
             }
-            else if(typeof(isready) == StEC.GetType()){
+            else if (typeof(isready) == StEC.GetType())
+            {
 
-            }else if(typeof(oxnewgame) == StEC.GetType()){
+                processIsready((isready)StEC);
 
-            }else if(typeof(position) == StEC.GetType()){
+            }
+            else if (typeof(oxnewgame) == StEC.GetType())
+            {
 
-            }else if(typeof(go) == StEC.GetType()){
+                processOxnewgame((oxnewgame)StEC);
 
-            }else if(typeof(stop) == StEC.GetType()){
+            }
+            else if (typeof(position) == StEC.GetType())
+            {
 
-            }else if(typeof(quit) == StEC.GetType()){
+                processPosition((position)StEC);
 
-            }else if(typeof(gameover) == StEC.GetType()){
-                
+            }
+            else if (typeof(go) == StEC.GetType())
+            {
+
+                processGo((go)StEC);
+
+            }
+            else if (typeof(stop) == StEC.GetType())
+            {
+
+                processStop((stop)StEC);
+
+            }
+            else if (typeof(quit) == StEC.GetType())
+            {
+
+                processQuit((quit)StEC);
+
+            }
+            else if (typeof(gameover) == StEC.GetType())
+            {
+
+                processGameover((gameover)StEC);
+
             }
         }
 
         //oxコマンドの処理
-        void processOx(ox command){
+        void processOx(ox command)
+        {
             //idコマンドの送信
             sendEtSCommand(new id(idType.name));
             sendEtSCommand(new id(idType.author));
@@ -119,8 +148,47 @@ namespace OXengine_random.Body
             sendEtSCommand(new oxok());
         }
 
+        void processIsready(isready command)
+        {
+            //readyokの送信
+            sendEtSCommand(new readyok());
+        }
+
+        void processOxnewgame(oxnewgame command)
+        {
+            //準備する
+        }
+
+        void processPosition(position command)
+        {
+
+        }
+
+        void processGo(go command)
+        {
+
+        }
+
+        void processStop(stop command)
+        {
+
+        }
+
+        void processQuit(quit command)
+        {
+            //TODO:終了前の準備処理を行う
+            
+            System.Environment.Exit(0);
+        }
+
+        void processGameover(gameover command)
+        {
+
+        }
+
         //EtSコマンドを送信する関数
-        void sendEtSCommand(EtSCommand EtSC){
+        void sendEtSCommand(EtSCommand EtSC)
+        {
             //コマンドをテキスト形式に変換して標準出力に流すだけ
             Console.WriteLine(EtSC.genCommandString());
         }
