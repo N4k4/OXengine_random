@@ -10,6 +10,8 @@ namespace OXengine_random.Body
     {
         //盤面の保存
         Game.Board board = new Game.Board();
+        //思考エンジン
+        Game.Engine engine;
 
 
         //サーバーから送られてきたコマンドのQueue
@@ -28,6 +30,7 @@ namespace OXengine_random.Body
 
             // EtSCommandQueue = new Queue<EtSCommand>();
 
+            engine = new Game.Engine();
 
 
             //イベントの登録
@@ -171,18 +174,34 @@ namespace OXengine_random.Body
 
         void processGo(go command)
         {
+            var move = engine.Go(command, board);
+            if (move == null)
+            {
 
+            }
+            else if (move != null)
+            {
+                sendEtSCommand(new bestmove((Game.move) move));
+            }
         }
 
         void processStop(stop command)
         {
+            var move = engine.Stop();
+            if (move == null)
+            {
 
+            }
+            else if (move != null)
+            {
+                sendEtSCommand(new bestmove((Game.move) move));
+            }
         }
 
         void processQuit(quit command)
         {
             //TODO:終了前の準備処理を行う
-            
+
             System.Environment.Exit(0);
         }
 

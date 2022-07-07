@@ -11,31 +11,40 @@ namespace OXengine_random.Game
         bool stopFlag;
 
         //現時点での候補を格納
-        (int, int) candidate;
+        move candidate;
 
-        Engine()
+        public Engine()
         {
             isThinking = false;
             stopFlag = false;
-            candidate = (0, 0);
+            candidate = new move(0,0);
         }
 
         //思考開始
-        (int, int)? Go(Board board)
+        public move? Go(Body.go command,Board board)
         {
 
             isThinking = true;
             //中断フラグが立つまで思考する
+            //TODO:制限時間が近づいたら切り上げる
             while(!stopFlag){
+                Random rnd = new Random();
+                candidate = new move(rnd.Next(3),rnd.Next(3));
+
+                if(board.checkMove(candidate)){
+                    isThinking = false;
+                    return candidate;
+                }
 
             }
+            isThinking = false;
             stopFlag = false;
             return null;
         }
 
         //思考中止
         //現時点での候補を返す
-        (int, int)? Stop()
+        public move? Stop()
         {
             if (isThinking == true)
             {

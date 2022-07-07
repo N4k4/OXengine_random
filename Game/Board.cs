@@ -33,26 +33,60 @@ namespace OXengine_random.Game
                 if (command.move != null)//初期盤面から変化があるとき
                 {
                     //最後の手が相手の手であることを使って、最初の手がどちらのものかを判別。
-                    int currentTurn=(command.move.Length+1) % 2;
+                    int currentTurn = (command.move.Length + 1) % 2;
 
-                    foreach(string positionString in command.move){
+                    foreach (string positionString in command.move)
+                    {
 
                         // Console.WriteLine("{0},{1}",positionString[0]-'a',positionString[1]-'1');
 
-                        body[positionString[0]-'a',positionString[1]-'1']=currentTurn;
-                        currentTurn = (currentTurn+1)%2;
+                        body[positionString[0] - 'a', positionString[1] - '1'] = currentTurn;
+                        currentTurn = (currentTurn + 1) % 2;
                     }
                 }
             }
         }
 
         //書き込み作業中は取り出さない。
-        public int[,] getBoard(){
+        public int[,] getBoard()
+        {
             int[,] obj;
-            lock(LockObj){
+            lock (LockObj)
+            {
                 obj = body;
             }
             return obj;
+        }
+
+        //入力された動きが実行可能か判定する
+        public bool checkMove(move m)
+        {
+            return body[m.x, m.y] == -1;
+        }
+    }
+
+    public class move
+    {
+        public int x { get; private set; }
+        public int y { get; private set; }
+        public move(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public string MoveString
+        {
+            get
+            {
+                string output;
+                output = "";
+
+                output +=(char) ('a'+x);
+                output +=(char) ('1'+y);
+
+                return output;
+            }
         }
     }
 }

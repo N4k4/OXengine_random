@@ -108,7 +108,12 @@ namespace OXengine_random.Body
             //TODO:ほかのオプションが追加されたときのために、コマンドの構文解釈をするように変更したい
 
             //!Parseに失敗したときの処理の追加
-            byouyomi = int.Parse(args[2]);
+            if(args.Length>1 && args[1]=="byouyomi"){
+                byouyomi = int.Parse(args[2]);
+            }else{
+                byouyomi = 0;
+            }
+            
         }
     }
 
@@ -234,25 +239,47 @@ namespace OXengine_random.Body
     }
 
     //bestmove
+    public enum bestmoveType{
+        move,resign
+    }
     //!未実装
     public class bestmove : EtSCommand
     {
 
         //TODO:動きを受け付ける
         //TODO:降参を適切に受け付ける
-        public bestmove()
+        public bestmoveType type{get; private set;}
+
+        private Game.move? move;
+
+        bestmove()
         {
 
         }
 
-        public bestmove(int a)
+        public bestmove(Game.move position)
         {
+            type = bestmoveType.move;
 
+            move = position;
+
+        }
+
+        public static bestmove resign(){
+            bestmove bm = new bestmove();
+            bm.type = bestmoveType.resign;
+            return bm;
         }
 
         public override string genCommandString()
         {
-            return "bestmove ";
+            if(type==bestmoveType.resign){
+                return "bestmove resign";
+            }
+            else{
+                //null参照が解消できない
+                return $"bestmove {(move).MoveString}";
+            }
         }
 
     }
